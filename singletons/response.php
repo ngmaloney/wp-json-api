@@ -1,7 +1,7 @@
 <?php
 
 class JSON_API_Response {
-  
+
   function setup() {
     global $json_api;
     $this->include_values = array();
@@ -14,11 +14,11 @@ class JSON_API_Response {
       $this->exclude_values = explode(',', $json_api->query->exclude);
       $this->include_values = array_diff($this->include_values, $this->exclude_values);
     }
-    
+
     // Compatibility with Disqus plugin
     remove_action('loop_end', 'dsq_loop_end');
   }
-  
+
   function get_json($data, $status = 'ok') {
     // Include a status value with the response
     if (is_array($data)) {
@@ -27,9 +27,9 @@ class JSON_API_Response {
       $data = get_object_vars($data);
       $data = array_merge(array('status' => $status), $data);
     }
-    
+
     $data = apply_filters('json_api_encode', $data);
-    
+
     if (function_exists('json_encode')) {
       // Use the built-in json_encode function if it's available
       return json_encode($data);
@@ -43,7 +43,7 @@ class JSON_API_Response {
       return $json->encode($data);
     }
   }
-  
+
   function is_value_included($key) {
     // Props to ikesyo for submitting a fix!
     if (empty($this->include_values) && empty($this->exclude_values)) {
@@ -56,7 +56,7 @@ class JSON_API_Response {
       }
     }
   }
-  
+
   function respond($result, $status = 'ok') {
     global $json_api;
     $json = $this->get_json($result, $status);
@@ -84,7 +84,7 @@ class JSON_API_Response {
     }
     exit;
   }
-  
+
   function output($result) {
     $charset = get_option('blog_charset');
     if (!headers_sent()) {
@@ -93,7 +93,7 @@ class JSON_API_Response {
     }
     echo $result;
   }
-  
+
   function callback($callback, $result) {
     $charset = get_option('blog_charset');
     if (!headers_sent()) {
@@ -102,7 +102,7 @@ class JSON_API_Response {
     }
     echo "$callback($result)";
   }
-  
+
   function add_status_query_var($url, $status) {
     if (strpos($url, '#')) {
       // Remove the anchor hash for now
@@ -121,7 +121,7 @@ class JSON_API_Response {
     }
     return $url;
   }
-  
+
   function prettify($ugly) {
     $pretty = "";
     $indent = "";
@@ -178,7 +178,7 @@ class JSON_API_Response {
     }
     return $pretty;
   }
-  
+
 }
 
 ?>
