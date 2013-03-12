@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: JSON API
-Plugin URI: http://wordpress.org/extend/plugins/json-api/
-Description: A RESTful API for WordPress
-Version: 1.0.7
+Plugin Name: JSON API NGM CUSTOM
+Plugin URI: https://github.com/ngmaloney/wp-json-api
+Description: A RESTful API for WordPress.
+Version: 1.0.7-CUSTOM
 Author: Dan Phiffer
 Author URI: http://phiffer.org/
 */
