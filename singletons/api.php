@@ -110,6 +110,9 @@ class JSON_API {
       if (isset($_REQUEST['json_api_base'])) {
         $this->save_option('json_api_base', $_REQUEST['json_api_base']);
       }
+      if (isset($_REQUEST['json_cors_origin'])) {
+        $this->save_option('json_cors_origin', $_REQUEST['json_cors_origin']);
+      }
     }
 
     ?>
@@ -206,6 +209,14 @@ class JSON_API {
       <tr valign="top">
         <th scope="row">API base</th>
         <td><code><?php bloginfo('url'); ?>/</code><input type="text" name="json_api_base" value="<?php echo get_option('json_api_base', 'api'); ?>" size="15" /></td>
+      </tr>
+    </table>
+    <h3>Cross Origin Resource Sharing (CORS)</h3>
+    <p>Specify a host origin for remote requests</p>
+     <table class="form-table">
+      <tr valign="top">
+        <th scope="row">CORS Origin</th>
+        <td><input type="text" name="json_cors_origin" value="<?php echo get_option('json_cors_origin', ''); ?>" size="15" /></td>
       </tr>
     </table>
     <?php if (!get_option('permalink_structure', '')) { ?>

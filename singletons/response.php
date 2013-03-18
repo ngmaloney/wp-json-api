@@ -66,7 +66,7 @@ class JSON_API_Response {
       if (!headers_sent()) {
         header('HTTP/1.1 200 OK');
         header('Content-Type: text/plain; charset: UTF-8', true);
-      } else {
+     } else {
         echo '<pre>';
       }
       echo $this->prettify($json);
@@ -87,9 +87,13 @@ class JSON_API_Response {
 
   function output($result) {
     $charset = get_option('blog_charset');
+    $cors_origin = get_option('json_cors_origin');
     if (!headers_sent()) {
       header('HTTP/1.1 200 OK', true);
       header("Content-Type: application/json; charset=$charset", true);
+      if(!empty($cors_origin)) {
+        header('Access-Control-Allow-Origin: ' . $cors_origin);
+      }
     }
     echo $result;
   }
