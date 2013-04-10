@@ -43,6 +43,7 @@ class JSON_API_Search_Controller {
     global $json_api;
     $args = array(
      'post_type' => $json_api->query->post_type,
+     'category_slug' => $json_api->query->category_slug,
     );
 
     return array(
