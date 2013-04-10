@@ -1,8 +1,7 @@
 <?php
 
-require_once 'search/category_search_api.php';
+require_once 'search/search_api.php';
 require_once 'search/date_search_api.php';
-require_once 'search/tag_search_api.php';
 
 /*
 Controller name: Search
@@ -35,65 +34,27 @@ class JSON_API_Search_Controller {
   }
 
   /**
-    * Post Type Search
-    * Params:
-    * post_type: String representing post type
+   * Performs a faceted search on several parameters.
+   * Replaces several of the previous search types
+   * Params:
+   * category_id
+   * category_slug
+   * tags
+   * tag_id
+   * post_type
   */
-  public function type_search() {
-    global $json_api;
-    $args = array(
-     'post_type' => $json_api->query->post_type,
-     'category_slug' => $json_api->query->category_slug,
-    );
-
-    return array(
-      'posts' => $json_api->introspector->get_posts($args),
-    );
-  }
-
-  /**
-    * PODs compatible category search
-    * Params:
-    * category_id - Integer, Category id to search by
-    * category_slug - String, Category slug to search by
-    * post_type - String, type of post to search by
-  */
-  //TODO: Support multiple categories
-  public function category_search() {
+  public function param_search() {
     global $json_api;
     $args = array(
      'category_id' => $json_api->query->category_id,
      'category_slug' => $json_api->query->category_slug,
-     'post_type' => $json_api->query->post_type
+     'post_type' => $json_api->query->post_type,
+     'tags' => $json_api->query->tags,
+     'tag_id' => $json_api->query->tag_id,
     );
-
-    $search = new CategorySearchAPI($args);
+    $search = new SearchAPI($args);
     return array(
       'posts' => $search->execute(),
     );
   }
-
-  /**
-    * PODs compatible tag search
-    * Params:
-    * tags - String, csv seperated list of tags
-    * tag_id - Integer, Tag id to search by
-    * post_type - String, type of post to search by
-  */
-  public function tag_search() {
-    global $json_api;
-    $args = array(
-      'tags' => $json_api->query->tags,
-      'tag_id' => $json_api->query->tag_id,
-      'post_type' => $json_api->query->post_type
-    );
-    $search = new TagSearchAPI($args);
-    return array(
-     'posts' => $search->execute(),
-    );
-  }
 }
-
-
-
-
