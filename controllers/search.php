@@ -33,8 +33,19 @@ class JSON_API_Search_Controller {
      'orderby' => $json_api->query->orderby,
     );
     $search = new SearchAPI($args);
+    return $this->posts_result($search->execute());
+  }
+
+  /**
+    * TODO: Refactor core implementation to DRY up
+  */
+  protected function posts_result($posts) {
+    global $wp_query;
     return array(
-      'posts' => $search->execute(),
+      'count' => count($posts),
+      'count_total' => (int) $wp_query->found_posts,
+      'pages' => $wp_query->max_num_pages,
+      'posts' => $posts
     );
   }
 }
