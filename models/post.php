@@ -255,7 +255,25 @@ class JSON_API_Post {
     foreach($wp_custom_fields as $key => $val) {
       //Hide hidden fields prefixed with "_"
       if(!preg_match("/^_/", $key)) {
-        $this->custom_fields->$key = $val;
+        //I am going to programmers hell for this ...but needed
+        //a way to deserialize pods posts.
+        $vals = array();
+        foreach($val as $node) {
+          $data = null;
+          $data = @unserialize($node);
+          if ($node === 'b:0;' || $data !== false) {
+            if(!empty($data['id'])) {
+              $vals[] = wp_get_attachment_url($data['id']);
+            }
+            else {
+              $vals[] = $data;
+            }
+          }
+          else {
+            $vals[] = $node;
+          }
+        }
+        $this->custom_fields->$key = $vals;
       }
     }
   }
